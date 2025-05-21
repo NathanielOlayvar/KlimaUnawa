@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Climate Tracker - KlimaUnawa</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link rel="stylesheet" href="/styles2.css" />
+
+  <!-- Luxon and Chart.js -->
+  <!-- Load Chart.js first -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Then load Luxon -->
+  <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.3/build/global/luxon.min.js"></script>
+  <!-- Then load the adapter -->
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.3.1/dist/chartjs-adapter-luxon.umd.min.js"></script>
+
+
+  <!-- Socket.IO client script -->
+  <!-- This path must be served by your server on /socket.io/socket.io.js -->
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+    <div class="d-flex align-items-center ms-auto">
+      <!-- Gear Icon Dropdown -->
+      <div class="dropdown">
+        <button class="btn btn-dark" type="button" id="gearDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi bi-gear-fill fs-4"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-slide-right" aria-labelledby="gearDropdown">
+          <li><a class="dropdown-item text-danger" href="/DeleteAccount?userId=<%= user._id %>"><i class="bi bi-trash3-fill me-2"></i>Delete Account</a></li>
+          <li><a class="dropdown-item" href="/"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+        </ul>
+      </div>
+    </div>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+         <li class="nav-item"><a class="nav-link" href="/homepage">Homepage</a></li>
+          <li class="nav-item"><a class="nav-link active" href="/dashboard">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="/appendix">Appendix</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container mt-4">
+    <h2 class="mb-4">Latest Data</h2>
+    <div class="data-container">
+      <p><strong>Latest Temperature:</strong>
+        <%= temperature %> °C
+      </p>
+      <p><strong>Latest Humidity:</strong>
+        <%= humidity %> %
+      </p>
+      <p><strong>Latest Heat Index:</strong>
+        <%= heat_index %> °C
+      </p>
+    </div>
+  </div>
+
+  <!-- Chart Container -->
+  <div class="container mt-4">
+    <h3 class="mb-3">Real-Time Chart</h3>
+    <div class="data-container">
+      <div class="time-filters mb-3">
+        <label for="timeWindowSelect" class="form-label">Select Time Window:</label>
+        <select id="timeWindowSelect" class="form-select" onchange="setTimeWindow(this.value)">
+          <option>Select Time Interval</option>
+          <option value="10">Last 10 Minutes</option>
+          <option value="30">Last 30 Minutes</option>
+          <option value="60">Last 1 Hour</option>
+        </select>
+      </div>
+      <canvas id="myChart" style="width:100%; max-width:1200px; height:400px;"></canvas>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS Bundle (includes Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    const socket = io();  // ensure socket.io client connects
+
+    const ctx = document.getElementById('myChart').getContext('2d');
+
+    const datasets = [
+    {
+      label: 'Temperature (°C)',
+      data: [],
+      borderColor: 'red',
+      parsing: { xAxisKey: 'x', yAxisKey: 'y' },
+      fill: false,
+      hidden: false
+    },
+    {
+      label: 'Humidity (%)',
+      data: [],
+      borderColor: 'blue',
+      parsing: { xAxisKey: 'x', yAxisKey: 'y' },
+      fill: false,
+      hidden: false
+    },
+    {
+      label: 'Heat Index (°C)',
+      data: [],
+      borderColor: 'orange',
+      parsing: { xAxisKey: 'x', yAxisKey: 'y' },
+      fill: false,
+      hidden: false
+    }
+  ];
+
+    const climateChart = new Chart(ctx, {
+      type: 'line',
+      data: { datasets },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Temperature, Humidity, and Heat Index Over Time'
+          }
+        },
+        scales: {
+          x: {
+            type: 'time',
+            time: {
+              unit: 'minute',
+              stepSize: 60,
+              tooltipFormat: 'HH:mm',
+              displayFormats: {
+                second: 'HH:mm'
+              }
+            },
+            title: { display: true, text: 'Time' }
+          },
+          y: {
+            beginAtZero: false,
+            title: { display: true, text: 'Measurement' }
+          }
+        }
+      }
+    });
+
+let allData = []; // Store ALL historical data
+let selectedWindow = 60 * 60 * 1000; // Default to 1 hour
+
+function getValueByIndex(d, index) {
+  const values = [d.temperature, d.humidity, d.heat_index];
+  return values[index];
+}
+
+function applyTimeWindow() {
+  const now = Date.now();
+  const cutoff = now - selectedWindow;
+
+  // Filter data while preserving original timestamps
+  const filteredData = allData.filter(d => {
+    const timestamp = new Date(d.timestamp).getTime();
+    return timestamp >= cutoff;
+  });
+
+  // Update datasets
+  climateChart.data.datasets.forEach((dataset, index) => {
+    dataset.data = filteredData.map(d => ({
+      x: new Date(d.timestamp),
+      y: getValueByIndex(d, index)
+    }));
+  });
+
+  // Update chart scales
+  climateChart.options.scales.x.min = cutoff;
+  climateChart.options.scales.x.max = now;
+
+  climateChart.update();
+}
+
+function setTimeWindow(minutes) {
+  selectedWindow = minutes * 60 * 1000;
+  applyTimeWindow();
+}
+
+
+
+// Modified socket listener
+socket.on('data-update', (newData) => {
+  console.log("Received data:", newData);
+
+  // Append new data instead of replacing
+  allData = [...allData, ...newData].filter((d, index, self) => // Filter out duplicates (assuming timestamp is unique)
+      index === self.findIndex(t => 
+        t.timestamp === d.timestamp
+      )
+    );
+
+  applyTimeWindow();
+});
+  </script>
+</body>
+
+</html>

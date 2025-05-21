@@ -1,0 +1,74 @@
+body {
+    background: linear-gradient(45deg, #4e9fd1, #56ccf2, #80e0ff, #1d4b7f);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+  }
+
+/* Navbar Styling */
+.navbar-nav .nav-item {
+    position: relative;
+    padding: 10px 20px;
+  }
+  
+  .navbar-nav .nav-item a {
+    color: white;
+    text-decoration: none;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 5px;
+    transition: color 0.3s ease, background-color 0.3s ease;
+  }
+  
+  /* Hover: Change color and add line */
+  .navbar-nav .nav-item a:hover,
+  .navbar-nav .nav-item a.active {
+    color: #33d5f1;  /* Change text color on hover */
+
+  }
+  
+  /* Line under each navbar link */
+  .navbar-nav .nav-item a::after {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 0;
+    background-color: white;
+    transition: width 0.3s ease, left 0.3s ease;
+  }
+  
+  /* On hover or active state */
+  .navbar-nav .nav-item a:hover::after,
+  .navbar-nav .nav-item a.active::after {
+    width: 100%;
+    left: 0;
+  }
+  
+    .site-name {
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+  }
+    .container {
+        padding: 20px;
+  }
+  
+  /* gradient animation */
+  @keyframes gradient {
+    0% { background-position: 0% 50%; }
+    25% { background-position: 100% 50%; }
+    50% { background-position: 0% 50%; }
+    75% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Data Container Styling */
+  .data-container {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-top: 30px;
+  }

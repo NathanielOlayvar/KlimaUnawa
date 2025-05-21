@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Climate Tracker - KlimaUnawa</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link rel="stylesheet" href="/styles2.css" />
+</head>
+
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+    <div class="d-flex align-items-center ms-auto">
+      <!-- Gear Icon Dropdown -->
+      <div class="dropdown">
+        <button class="btn btn-dark" type="button" id="gearDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi bi-gear-fill fs-4"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-slide-right" aria-labelledby="gearDropdown">
+          <li><a class="dropdown-item text-danger" href="/DeleteAccount?userId=<%= user._id %>"><i class="bi bi-trash3-fill me-2"></i>Delete Account</a></li>
+          <li><a class="dropdown-item" href="/"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+        </ul>
+      </div>
+    </div>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="/homepage">Homepage</a></li>
+          <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="/appendix">Appendix</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container my-5 animate__animated animate__fadeIn">
+    <div class="text-center mb-4">
+      <h1 class="display-5 text-primary"><i class="bi bi-thermometer-half"></i> KlimaUnawa: A System for Local Climate Tracking to Improve Environmental Data Awareness</h1>
+      <p class="lead">Monitoring Local Climate Conditions with Real-Time Data</p>
+    </div>
+
+    <hr class="my-4">
+
+    <section>
+      <h3>🔎 Overview</h3>
+      <div class="data-container">
+      <p>
+        Climate Tracker gives you up-to-date insights into local environmental conditions, focusing on three key factors:
+        <strong>temperature</strong>, <strong>humidity</strong>, and the <strong>heat index</strong> — a measure of how hot it feels when humidity is factored in.
+      </p>
+      </div>
+    </section>
+
+    <section class="mt-4">
+      <h3>🎯 Purpose</h3>
+      <div class="data-container">
+      <p>
+        Our goal is to help individuals, communities, and decision-makers stay informed about changing climate conditions,
+        particularly those that affect health, comfort, and energy use.
+      </p>
+      </div>
+    </section>
+
+    <section class="mt-4">
+      <h3>📈 Why These Metrics Matter</h3>
+      <ul class="list-group mb-4">
+        <li class="list-group-item"><strong>Temperature</strong> affects energy use, agriculture, and public health.</li>
+        <li class="list-group-item"><strong>Humidity</strong> impacts air quality, comfort, and mold growth.</li>
+        <li class="list-group-item"><strong>Heat Index</strong> is critical for heat stress warnings and outdoor activity safety.</li>
+      </ul>
+    </section>
+
+    <div class="text-center mb-5">
+      <a href="/dashboard" class="btn btn-lg btn-outline-primary animate__animated animate__pulse animate__infinite">
+        Proceed to Real Time Dashboard <i class="bi bi-arrow-right-circle-fill"></i>
+      </a>
+    </div>
+
+    <section>
+      <h3 class="mb-3">🧊 Tips for Hot & Humid Days</h3>
+      <div class="accordion" id="heatTips">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="tipOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+              💧 Stay Hydrated
+            </button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#heatTips">
+            <div class="accordion-body">
+              Drink water regularly and avoid sugary drinks. Limit outdoor activity during peak heat hours.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="tipTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+              🌀 Use Fans or AC
+            </button>
+          </h2>
+          <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#heatTips">
+            <div class="accordion-body">
+              Cooling your space helps maintain comfort and avoid heat-related illnesses.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="tipThree">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+              ⚠️ Watch for Heat Exhaustion
+            </button>
+          </h2>
+          <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#heatTips">
+            <div class="accordion-body">
+              Look for symptoms like dizziness, rapid pulse, or excessive sweating. Take breaks in the shade and stay cool.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Climate Tracker - KlimaUnawa</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link rel="stylesheet" href="/styles2.css" />
+</head>
+
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <div class="d-flex align-items-center ms-auto">
+        <!-- Gear Icon Dropdown -->
+        <div class="dropdown">
+          <button class="btn btn-dark" type="button" id="gearDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-gear-fill fs-4"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-slide-right" aria-labelledby="gearDropdown">
+            <li><a class="dropdown-item text-danger" href="/DeleteAccount?userId=<%= user._id %>"><i class="bi bi-trash3-fill me-2"></i>Delete Account</a></li>
+            <li><a class="dropdown-item" href="/"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="/homepage">Homepage</a></li>
+          <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link active" href="/appendix">Appendix</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container my-5">
+    <h2 class="mb-4">Materials Used</h2>
+    <ul class="list-group mb-4">
+      <li class="list-group-item">Arduino UNO R4 WiFi | ABX00087</li>
+      <li class="list-group-item">Jumper Wires</li>
+      <li class="list-group-item">DHT22 Temperature and Humidity Sensor Module</li>
+      <p>Source: <a href="https://newbiely.com/tutorials/arduino-uno-r4/arduino-uno-r4-dht22"
+          target="_blank">https://newbiely.com/tutorials/arduino-uno-r4/arduino-uno-r4-dht22</a></p>
+    </ul>
+
+
+    <h2 class="mt-5 mb-4">Libraries / Dependencies Used</h2>
+    <div class="data-container">
+      <table class="table table-striped">
+        <thead class="table-dark">
+          <tr>
+            <th>Dependency</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>bcrypt</td>
+            <td>Used for securely hashing passwords.</td>
+          </tr>
+          <tr>
+            <td>body-parser</td>
+            <td>Middleware for parsing request bodies. Optional with Express 4.16+.</td>
+          </tr>
+          <tr>
+            <td>cors</td>
+            <td>Enables Cross-Origin Resource Sharing.</td>
+          </tr>
+          <tr>
+            <td>dotenv</td>
+            <td>Loads environment variables from a <code>.env</code> file.</td>
+          </tr>
+          <tr>
+            <td>ejs</td>
+            <td>Templating engine to embed JavaScript in HTML.</td>
+          </tr>
+          <tr>
+            <td>express</td>
+            <td>Main web framework for Node.js apps.</td>
+          </tr>
+          <tr>
+            <td>mongodb</td>
+            <td>Native MongoDB driver for Node.js.</td>
+          </tr>
+          <tr>
+            <td>mongoose</td>
+            <td>ODM for MongoDB. Simplifies data modeling.</td>
+          </tr>
+          <tr>
+            <td>router</td>
+            <td>Used for defining route groups. May not be needed with Express 4+.</td>
+          </tr>
+          <tr>
+            <td>socket.io</td>
+            <td>Enables real-time, bidirectional communication between client and server.</td>
+          </tr>
+          <tr>
+            <td>passport</td>
+            <td>A Node.js middleware that simplifies user authentication by providing flexible strategies (like local
+              login or OAuth) and managing login sessions securely.</td>
+          </tr>
+          <tr>
+            <td>passport-local</td>
+            <td>A Passport.js strategy used for authenticating users with a username and password, typically stored in a
+              database, in a local login system.</td>
+          </tr>
+          <tr>
+            <td>morgan</td>
+            <td>Morgan is a middleware for Node.js that logs HTTP requests to the console, helping developers monitor
+              and debug incoming traffic to their application.</td>
+          </tr>
+                    <tr>
+            <td>express-session</td>
+            <td>Stores user-specific data (like login state) across multiple HTTP requests, enabling persistent sessions for authenticated users in an Express app.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="alert alert-warning mt-4">
+      <strong>Note:</strong> You can probably remove <code>router</code> unless explicitly used. Also,
+      <code>body-parser</code> is optional in Express 4.16+ due to built-in methods.
+    </div>
+  </div>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
