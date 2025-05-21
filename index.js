@@ -195,7 +195,6 @@ app.post('/login', async (req, res) => {
     // Successful login response
     res.status(200).json({ message: "Login successful", redirect: "/Homepage" });
 
-    // If you're using frontend JS to handle redirects, don't call res.redirect here
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ message: "An error occurred during login." });
